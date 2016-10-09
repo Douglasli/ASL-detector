@@ -63,12 +63,14 @@ class SampleListener(Leap.Listener):
                 direction.yaw * Leap.RAD_TO_DEG)
 
             # Get arm bone
+            
             arm = hand.arm
+            '''
             print "  Arm direction: %s, wrist position: %s, elbow position: %s" % (
                 arm.direction,
                 arm.wrist_position,
                 arm.elbow_position)
-
+            '''
             # Get fingers
             for finger in hand.fingers:
 
@@ -87,6 +89,7 @@ class SampleListener(Leap.Listener):
                         bone.next_joint,
                         bone.direction)
 
+        '''
         # Get tools
         for tool in frame.tools:
 
@@ -131,6 +134,7 @@ class SampleListener(Leap.Listener):
                 print "  Screen Tap id: %d, %s, position: %s, direction: %s" % (
                         gesture.id, self.state_names[gesture.state],
                         screentap.position, screentap.direction )
+        '''
 
         if not (frame.hands.is_empty and frame.gestures().is_empty):
             print ""
@@ -154,6 +158,7 @@ def main():
     controller = Leap.Controller()
 
     # Have the sample listener receive events from the controller
+    raw_input('Press enter to begin: ')
     controller.add_listener(listener)
 
     # Keep this process running until Enter is pressed
