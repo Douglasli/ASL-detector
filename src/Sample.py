@@ -81,13 +81,12 @@ class SampleListener(Leap.Listener):
                     finger.width)
 
                 # Get bones
-                for b in range(0, 4):
+                for b in range(0, 3):
                     bone = finger.bone(b)
-                    print "      Bone: %s, start: %s, end: %s, direction: %s" % (
+                    bonenext = finger.bone(b+1)
+                    print "      Bone: %s, Angle: %s" % (
                         self.bone_names[bone.type],
-                        bone.prev_joint,
-                        bone.next_joint,
-                        bone.direction)
+                        bone.direction.dot(bonenext.direction))
 
         '''
         # Get tools
