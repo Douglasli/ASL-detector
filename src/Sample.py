@@ -9,8 +9,7 @@ import os, sys, thread, time
 sys.path.insert(0, "../lib")
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
-
-
+import json
 class SampleListener(Leap.Listener):
     finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
     bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
@@ -41,12 +40,12 @@ class SampleListener(Leap.Listener):
         if len(frame.hands)==0:
         	return
         	
-        print "Frame id: %d, timestamp: %d, hands: %d, fingers: %d, tools: %d, gestures: %d" % (
-              frame.id, frame.timestamp, len(frame.hands), len(frame.fingers), len(frame.tools), len(frame.gestures()))
+        print "Frame id: %d, timestamp: %d, hands: %d, fingers: %d" % (
+              frame.id, frame.timestamp, len(frame.hands), len(frame.fingers))
 
         # Get hands
         for hand in frame.hands:
-
+            '''
             handType = "Left hand" if hand.is_left else "Right hand"
 
             print "  %s, id %d, position: %s" % (
@@ -61,11 +60,11 @@ class SampleListener(Leap.Listener):
                 direction.pitch * Leap.RAD_TO_DEG,
                 normal.roll * Leap.RAD_TO_DEG,
                 direction.yaw * Leap.RAD_TO_DEG)
-
+            
             # Get arm bone
             
             arm = hand.arm
-            '''
+            
             print "  Arm direction: %s, wrist position: %s, elbow position: %s" % (
                 arm.direction,
                 arm.wrist_position,
@@ -74,12 +73,10 @@ class SampleListener(Leap.Listener):
             # Get fingers
             for finger in hand.fingers:
 
-                print "    %s finger, id: %d, length: %fmm, width: %fmm" % (
-                    self.finger_names[finger.type],
-                    finger.id,
-                    finger.length,
-                    finger.width)
-
+                print "    %s finger: %d" % (
+                    self.finger_names[finger.type]
+                    )
+                    
                 # Get bones
                 for b in range(0, 3):
                     bone = finger.bone(b)
@@ -155,6 +152,9 @@ def main():
     # Create a sample listener and controller
     listener = SampleListener()
     controller = Leap.Controller()
+
+    # Input test alphabet
+    Sample = raw_input("Please figure out which alphabet you want to test:")
 
     # Have the sample listener receive events from the controller
     raw_input('Press enter to begin: ')
