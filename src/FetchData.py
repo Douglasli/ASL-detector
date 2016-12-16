@@ -1,18 +1,14 @@
-################################################################################
-# Copyright (C) 2012-2013 Leap Motion, Inc. All rights reserved.               #
-# Leap Motion proprietary and confidential. Not for distribution.              #
-# Use subject to the terms of the Leap Motion SDK Agreement available at       #
-# https://developer.leapmotion.com/sdk_agreement, or another agreement         #
-# between Leap Motion and you, your company or other organization.             #
-################################################################################
+###########################
 import os, sys, thread, time
 sys.path.insert(0, "../lib")
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
-import io,json
+import io,csv
 
 #Sample
 Sample = ""
+data = []
+datacomponent = []
 
 class SampleListener(Leap.Listener):
     finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
@@ -21,6 +17,8 @@ class SampleListener(Leap.Listener):
     state_names = ['STATE_INVALID', 'STATE_START', 'STATE_UPDATE', 'STATE_END']
 
     global Sample
+    global data
+    global datacomponent
 
     def on_init(self, controller):
         print "Initialized"
@@ -42,22 +40,7 @@ class SampleListener(Leap.Listener):
         print "Exited"
 
     def on_frame(self, controller):
-        data={
-    "Thumb" : 
-        {"MetacarpaltoProximal":0,"ProximaltoIntermediate":0,"IntermediatetoDistal":0 }
-    ,
-    "Index" : 
-        {"MetacarpaltoProximal":0,"ProximaltoIntermediate":0,"IntermediatetoDistal":0 }
-    ,
-    "Middle" : 
-        {"MetacarpaltoProximal":0,"ProximaltoIntermediate":0,"IntermediatetoDistal":0 }
-    ,
-    "Ring" : 
-        {"MetacarpaltoProximal":0,"ProximaltoIntermediate":0,"IntermediatetoDistal":0 }
-    ,
-    "Pinky" : 
-        {"MetacarpaltoProximal":0,"ProximaltoIntermediate":0,"IntermediatetoDistal":0 }
-    }
+        datacomponent.append(Sample)
         # Get the most recent frame and report some basic information
         frame = controller.frame()
         if len(frame.hands)==0:
@@ -82,9 +65,10 @@ class SampleListener(Leap.Listener):
                     print "      Bone: %s, Angle: %s" % (
                         bone_angle_name,
                         angle)
-                    data[fingerName][bone_angle_name] = angle
-                    with io.open('data.json', 'w', encoding='utf-8') as f:
-                        f.write(unicode(json.dumps(data, ensure_ascii=False)))
+                    datacomponent.append(bone_angle_name)
+            data.append(datacomponent)
+
+                    
 
         if not (frame.hands.is_empty and frame.gestures().is_empty):
             print ""
@@ -104,8 +88,9 @@ class SampleListener(Leap.Listener):
 
 def main():
     # Input test alphabet
-    global Sample 
-    Sample = raw_input("Please figure out which alphabet you want to test:")
+    global Sample
+    global data 
+    Sample = raw_input("Please figure out which alphabet you want to test:\n")
 
     # Create a sample listener and controller
     listener = SampleListener()
@@ -122,9 +107,12 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
-        # Remove the sample listener when done
+        # Remove the sample listener when done and save data to CSV
         controller.remove_listener(listener)
-
+        csvfile = file('result.csv', 'a')
+		writer.writerows(data)
+		csvfile.close()
+		print("Sava is done")
 
 if __name__ == "__main__":
     main()
