@@ -6,7 +6,7 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 import io,csv
 
 #Sample
-Sample = ""
+Sample = 0
 data = []
 datacomponent = []
 
@@ -18,8 +18,6 @@ class SampleListener(Leap.Listener):
 
     global Sample
     global data
-    global datacomponent
-
     def on_init(self, controller):
         print "Initialized"
 
@@ -40,7 +38,6 @@ class SampleListener(Leap.Listener):
         print "Exited"
 
     def on_frame(self, controller):
-        datacomponent.append(Sample)
         # Get the most recent frame and report some basic information
         frame = controller.frame()
         if len(frame.hands)==0:
@@ -51,6 +48,9 @@ class SampleListener(Leap.Listener):
 
         # Get hands
         for hand in frame.hands:
+            global datacomponent
+            datacomponent = []
+            datacomponent.append(Sample)
             # Get fingers
             for finger in hand.fingers:
                 fingerName = self.finger_names[finger.type]
@@ -65,7 +65,7 @@ class SampleListener(Leap.Listener):
                     print "      Bone: %s, Angle: %s" % (
                         bone_angle_name,
                         angle)
-                    datacomponent.append(bone_angle_name)
+                    datacomponent.append(angle)
             data.append(datacomponent)
 
                     
@@ -90,8 +90,8 @@ def main():
     # Input test alphabet
     global Sample
     global data 
-    Sample = raw_input("Please figure out which alphabet you want to test:\n")
-
+    alphabet = raw_input("Please figure out which alphabet you want to test:\n")
+    Sample = ord(alphabet)-64
     # Create a sample listener and controller
     listener = SampleListener()
     controller = Leap.Controller()
@@ -109,10 +109,9 @@ def main():
     finally:
         # Remove the sample listener when done and save data to CSV
         controller.remove_listener(listener)
-        csvfile = file('result.csv', 'a')
-		writer.writerows(data)
-		csvfile.close()
-		print("Sava is done")
-
+        with open("result/result.csv", "a") as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+        print("Save successfully")
 if __name__ == "__main__":
     main()
