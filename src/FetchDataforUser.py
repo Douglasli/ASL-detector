@@ -41,9 +41,6 @@ class SampleListener(Leap.Listener):
         if len(frame.hands)==0:
         	return
         	
-        print "Frame id: %d, timestamp: %d, hands: %d, fingers: %d" % (
-              frame.id, frame.timestamp, len(frame.hands), len(frame.fingers))
-
         # Get hands
         for hand in frame.hands:
             global datacomponent
@@ -51,24 +48,16 @@ class SampleListener(Leap.Listener):
             # Get fingers
             for finger in hand.fingers:
                 fingerName = self.finger_names[finger.type]
-                print "    %s finger" % (
-                    fingerName)
                 # Get bones
                 for b in range(0, 3):
                     bone = finger.bone(b)
                     bonenext = finger.bone(b+1)
                     bone_angle_name = self.bone_angle_name[bone.type]
                     angle = bone.direction.dot(bonenext.direction)
-                    print "      Bone: %s, Angle: %s" % (
-                        bone_angle_name,
-                        angle)
                     datacomponent.append(angle)
             data.append(datacomponent)
-
-                    
-
         if not (frame.hands.is_empty and frame.gestures().is_empty):
-            print ""
+            pass
 
     def state_string(self, state):
         if state == Leap.Gesture.STATE_START:
@@ -83,7 +72,7 @@ class SampleListener(Leap.Listener):
         if state == Leap.Gesture.STATE_INVALID:
             return "STATE_INVALID"
 
-def main():
+def fetch():
     # Create a sample listener and controller
     listener = SampleListener()
     controller = Leap.Controller()
@@ -101,9 +90,26 @@ def main():
     finally:
         # Remove the sample listener when done and save data to CSV
         controller.remove_listener(listener)
-        with open("result/predic.csv", "w") as f:
+        with open("result/user.csv", "w") as f:
             writer = csv.writer(f)
             writer.writerows(data)
         print("Save successfully")
-if __name__ == "__main__":
-    main()
+
+def fetchRealTime():
+    # Create a sample listener and controller
+    listener = SampleListener()
+    controller = Leap.Controller()
+
+    # Have the sample listener receive events from the controller
+    raw_input('Press enter to begin: ')
+    controller.add_listener(listener)
+    try:
+        sys.stdin.readline()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # Remove the sample listener when done and save data to CSV
+        controller.remove_listener(listener)
+
+def getDatacomponent():
+    return datacomponent

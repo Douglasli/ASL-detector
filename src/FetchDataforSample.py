@@ -109,7 +109,7 @@ def main():
     finally:
         # Remove the sample listener when done and save data to CSV
         controller.remove_listener(listener)
-        with open("result/result.csv", "a") as f:
+        with open("result/sample.csv", "a") as f:
             writer = csv.writer(f)
             writer.writerows(data)
         print("Save successfully")
