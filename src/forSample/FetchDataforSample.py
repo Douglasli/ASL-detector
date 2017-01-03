@@ -1,6 +1,6 @@
 ###########################
 import os, sys, thread, time
-sys.path.insert(0, "../lib")
+sys.path.insert(0, "../../lib")
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 import io,csv
@@ -109,7 +109,7 @@ def main():
     finally:
         # Remove the sample listener when done and save data to CSV
         controller.remove_listener(listener)
-        with open("result/sample.csv", "a") as f:
+        with open("../result/sample.csv", "a") as f:
             writer = csv.writer(f)
             writer.writerows(data)
         print("Save successfully")

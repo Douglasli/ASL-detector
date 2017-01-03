@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
 
 # lr = linear_model.LinearRegression()
-readdata = csv.reader(open("result/sample.csv"))
+readdata = csv.reader(open("../result/sample.csv"))
 datalist = list(readdata)
 for row in datalist:
     for k in range(0,15):
@@ -17,16 +17,12 @@ dataset = np.array(datalist).astype(np.float)
 X = dataset[:, 1:15]  
 y = dataset[:, 0] 
 
-clf = SVR(kernel='rbf', C=1e3, gamma=0.1)
-clf.fit(X, y)
-
-joblib.dump(clf,"predict/machine_SVR.pkl")
-clf=joblib.load("predict/machine_SVR.pkl")
+clf=joblib.load("../predict/machine_SVR.pkl")
 clf.fit(X, y)
 
 predict=clf.predict(X)
 print clf.score(X, y)
-scores=cross_val_score(clf,X,y,cv=500)
+scores=cross_val_score(clf,X,y,cv=8)
 print scores
 plt.scatter(predict,y,s=2)
 plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2)
