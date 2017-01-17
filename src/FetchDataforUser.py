@@ -45,6 +45,8 @@ class SampleListener(Leap.Listener):
         for hand in frame.hands:
             global datacomponent
             datacomponent = []
+            handDirection = hand.direction
+
             # Get fingers
             for finger in hand.fingers:
                 fingerName = self.finger_names[finger.type]
@@ -55,6 +57,12 @@ class SampleListener(Leap.Listener):
                     bone_angle_name = self.bone_angle_name[bone.type]
                     angle = bone.direction.dot(bonenext.direction)
                     datacomponent.append(angle)
+
+                # Get the angle between finger and hand
+                bone = finger.bone(3)
+                angle = bone.direction.dot(handDirection)
+                datacomponent.append(angle)
+
             data.append(datacomponent)
         if not (frame.hands.is_empty and frame.gestures().is_empty):
             pass

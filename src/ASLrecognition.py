@@ -6,7 +6,21 @@ import sys
 def Analysis():
 	FetchDataforUser.fetch()
 	predict = Predict.Predict()
-	print predict
+	result = {}
+	for a in predict:
+		if a in result:
+			result[a] = result[a]+1
+		else:
+			result.update({a:0})
+
+	total = 0.0
+	for a in result:
+		total = total+result[a]
+	for a in result:
+		b = float(result[a])
+		poss = b/total
+		print "Character: %s, possibility: %0.2f \n" % (
+			a, poss)
 
 # Make program realtime
 def work():
