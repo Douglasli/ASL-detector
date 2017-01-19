@@ -11,10 +11,10 @@ from sklearn.model_selection import cross_val_score
 readdata = csv.reader(open("../result/sample.csv"))
 datalist = list(readdata)
 for row in datalist:
-    for k in range(0,20):
+    for k in range(0,21):
         row[k] = float(row[k])
 dataset = np.array(datalist).astype(np.float)
-X = dataset[:, 1:20]  
+X = dataset[:, 1:21]  
 y = dataset[:, 0] 
 clf = SVR(kernel='rbf', C=1e3, gamma=0.1)
 clf=joblib.load("../predict/machine_SVR.pkl")
@@ -27,7 +27,7 @@ plt.scatter(predict,y,s=2,color='red')
 for a in range(1,37):
 	plt.plot([a-0.5,a+0.5], [a,a],color='blue',linestyle="-")
 #annotate
-datalist = {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11,'l':12,'m':13,'n':14,'o':15,'p':16,'q':17,'r':18,'s':19,'t':20,'u':21,'v':22,'w':23,'x':24,'y':25,'z':26,'0':27,'1':28,'2':29,'3':30,'4':31,'5':32,'6':33,'7':34,'8':35,'9':36}
+datalist = {'a':1,'b':2,'c':3,'k':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'d':11,'l':12,'m':13,'n':14,'o':15,'p':16,'q':17,'r':18,'s':19,'t':20,'u':21,'v':22,'w':23,'x':24,'y':25,'z':26,'0':27,'1':28,'2':29,'3':30,'4':31,'5':32,'6':33,'7':34,'8':35,'9':36}
 for a in range(1,37):
 	text = datalist.keys()[datalist.values().index(a)]
 	plt.annotate(text,

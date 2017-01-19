@@ -62,7 +62,10 @@ class SampleListener(Leap.Listener):
                 bone = finger.bone(3)
                 angle = bone.direction.dot(handDirection)
                 datacomponent.append(angle)
-
+            # Get the number of extended fingers
+            hand_pointables = hand.pointables.extended()
+            numberExtendedFinger = len(hand_pointables)
+            datacomponent.append(numberExtendedFinger)
             data.append(datacomponent)
         if not (frame.hands.is_empty and frame.gestures().is_empty):
             pass

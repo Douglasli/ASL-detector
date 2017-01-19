@@ -10,10 +10,10 @@ def main():
 	readdata = csv.reader(open("../result/sample.csv"))
 	datalist = list(readdata)
 	for row in datalist:
-	    for k in range(0,20):
+	    for k in range(0,21):
 	        row[k] = float(row[k])
 	dataset = np.array(datalist).astype(np.float)
-	X = dataset[:, 1:20]  
+	X = dataset[:, 1:21]  
 	y = dataset[:, 0] 
 	clf = SVR(kernel='rbf', C=1e3, gamma=0.1)
 	clf.fit(X, y)
