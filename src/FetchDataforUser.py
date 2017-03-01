@@ -8,7 +8,7 @@ import io,csv
 #Sample
 data = []
 datacomponent = []
-
+count = 0
 class SampleListener(Leap.Listener):
     finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
     bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
@@ -44,6 +44,7 @@ class SampleListener(Leap.Listener):
         # Get hands
         for hand in frame.hands:
             global datacomponent
+            global count
             datacomponent = []
             handDirection = hand.direction
 
@@ -67,6 +68,7 @@ class SampleListener(Leap.Listener):
             numberExtendedFinger = len(hand_pointables)
             datacomponent.append(numberExtendedFinger)
             data.append(datacomponent)
+            count = count +1
         if not (frame.hands.is_empty and frame.gestures().is_empty):
             pass
 
@@ -87,24 +89,21 @@ def fetch():
     # Create a sample listener and controller
     listener = SampleListener()
     controller = Leap.Controller()
-
+    global count
     # Have the sample listener receive events from the controller
-    raw_input('Press enter to begin: ')
+    # raw_input('Press enter to begin: ')
     controller.add_listener(listener)
 
     # Keep this process running until Enter is pressed
-    print "Press Enter to quit..."
-    try:
-        sys.stdin.readline()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Remove the sample listener when done and save data to CSV
-        controller.remove_listener(listener)
-        with open("result/user.csv", "w") as f:
-            writer = csv.writer(f)
-            writer.writerows(data)
-        print("Save successfully")
+    print "Wait for fetching data"
+    while True:
+        if count == 500:
+            controller.remove_listener(listener)
+            with open("result/user.csv", "w") as f:
+                writer = csv.writer(f)
+                writer.writerows(data)
+                print("Save successfully")
+            break
 
 def fetchRealTime():
     # Create a sample listener and controller
