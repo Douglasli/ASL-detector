@@ -6,6 +6,13 @@ import csv as csv
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_score
+import itertools
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import explained_variance_score
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import median_absolute_error
+from sklearn.metrics import r2_score
 
 # lr = linear_model.LinearRegression()
 readdata = csv.reader(open("../result/sample.csv"))
@@ -21,8 +28,16 @@ clf=joblib.load("../predict/machine_SVR.pkl")
 
 predict=clf.predict(X)
 print clf.score(X, y)
-scores = cross_val_score(clf, X, y, cv=10)
-print scores
+print explained_variance_score(y, predict)
+print mean_absolute_error(y, predict)
+print mean_squared_error(y, predict)
+print median_absolute_error(y, predict)
+print r2_score(y, predict)  
+# scores = cross_val_score(clf, X, y, cv=10)
+# print scores
+
+
+
 # fig = plt.figure(figsize=(10, 5), dpi=200)
 
 # plt.scatter(predict,y,s=2,color='red')
