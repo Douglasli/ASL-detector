@@ -172,6 +172,6 @@ def Analysis():
 def main():
 	while True:
 		Analysis()
-		time.sleep(2)
+	#	time.sleep(1)
 if __name__ == "__main__":
     main()
