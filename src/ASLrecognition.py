@@ -4,6 +4,9 @@ from datetime import date, time, datetime, timedelta
 import sys
 import socket
 from websocket import create_connection
+from os import system
+
+
 def Analysis():
 	ws = create_connection("ws://127.0.0.1:8001/websocket")
 	ws.send("Wait for fetching")
@@ -30,6 +33,8 @@ def Analysis():
 	print finalResult
 # socket programming	
 	ws.send(finalResult)
+
+	system('say Your result is' + finalResult)
 	
 
 # # Make program realtime
