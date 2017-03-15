@@ -97,13 +97,8 @@ def fetch():
     # Keep this process running until Enter is pressed
     print "Wait for fetching data"
     while True:
-        if count == 500:
-            controller.remove_listener(listener)
-            with open("result/user.csv", "w") as f:
-                writer = csv.writer(f)
-                writer.writerows(data)
-                print("Save successfully")
-            break
+        if count == 60:
+            return data
 
 def fetchRealTime():
     # Create a sample listener and controller
