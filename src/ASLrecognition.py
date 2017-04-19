@@ -94,8 +94,7 @@ class SampleListener(Leap.Listener):
             return "STATE_STOP"
 
         if state == Leap.Gesture.STATE_INVALID:
-            return "STATE_INVALID"io[ 
-            	]
+            return "STATE_INVALID"
 def fetch():
     # Create a sample listener and controller
     listener = SampleListener()
